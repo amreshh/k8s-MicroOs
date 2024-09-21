@@ -1,0 +1,20 @@
+{
+  "name": "k8s-microos",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "shutdownAction": "stopContainer",
+  "mounts": [
+    "source=/var/run/libvirt/virtqemud-sock,target=/var/run/libvirt/libvirt-sock,type=bind,consistency=cached"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "VisualStudioExptTeam.vscodeintellicode",
+        "docsmsft.docs-markdown",
+        "gamunu.opentofu"
+      ]
+    }
+  }
+}

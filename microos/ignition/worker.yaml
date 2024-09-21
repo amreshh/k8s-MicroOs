@@ -1,0 +1,38 @@
+variant: fcos
+version: 1.5.0
+systemd:
+  units:
+    - name: sshd.service
+      enabled: true
+    - name: packages.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Install os packages
+        Wants=network-online.target
+        After=network-online.target
+
+        [Service]
+        Environment=CRI-O_VERSION=1.24.3-2.4
+        Environment=KUBERNETES_VERSION=1.31.0-45.1
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/bin/bash -c "/usr/sbin/transactional-update reboot --non-interactive pkg install cri-o-${CRI-O_VERSION} kubernetes-kubelet-${KUBERNETES_VERSION}"
+
+        [Install]
+        WantedBy=multi-user.target
+passwd:
+  users:
+    - name: root
+      password_hash: # create password and set hash here, with openssl passwd -6
+      ssh_authorized_keys:
+        -  # set_contents_of_public_key
+storage:
+  files:
+    - path: /etc/selinux/config
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: |
+          SELINUX=permissive
+          SELINUXTYPE=targeted
