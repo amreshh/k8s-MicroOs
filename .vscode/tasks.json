@@ -2,17 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "controlplane ignition",
+      "label": "generate ignition",
       "type": "shell",
-      "command": "butane -p -o controlplane.ign controlplane.yaml",
-      "options": {
-        "cwd": "${workspaceFolder}/microos/ignition"
-      }
-    },
-    {
-      "label": "worker ignition",
-      "type": "shell",
-      "command": "butane -p -o worker.ign worker.yaml",
+      "command": "butane -p -o controlplane.ign controlplane.yaml && butane -p -o worker.ign worker.yaml",
       "options": {
         "cwd": "${workspaceFolder}/microos/ignition"
       }

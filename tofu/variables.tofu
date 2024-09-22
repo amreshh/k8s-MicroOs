@@ -21,8 +21,8 @@ variable "controlplanes" {
       vcpu        = 2
       memory      = 8  # GiB
       volume_size = 20 # GiB
-      address     = "192.168.150.1"
-      mac         = "AA:BB:CC:50:00:01"
+      address     = "192.168.150.10"
+      mac         = "AA:BB:CC:50:00:10"
     }
   }
 }
@@ -44,8 +44,8 @@ variable "workers" {
       vcpu        = 2
       memory      = 8
       volume_size = 50
-      address     = "192.168.150.10"
-      mac         = "AA:BB:CC:50:00:10"
+      address     = "192.168.150.20"
+      mac         = "AA:BB:CC:50:00:20"
     }
     worker2 = {
       name        = "worker2"
@@ -53,8 +53,8 @@ variable "workers" {
       vcpu        = 2
       memory      = 8
       volume_size = 50
-      address     = "192.168.150.11"
-      mac         = "AA:BB:CC:50:00:11"
+      address     = "192.168.150.21"
+      mac         = "AA:BB:CC:50:00:21"
     }
   }
 }

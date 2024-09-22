@@ -13,7 +13,8 @@
       "extensions": [
         "VisualStudioExptTeam.vscodeintellicode",
         "docsmsft.docs-markdown",
-        "gamunu.opentofu"
+        "gamunu.opentofu",
+        "emeraldwalk.RunOnSave"
       ]
     }
   }

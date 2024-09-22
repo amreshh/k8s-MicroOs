@@ -20,5 +20,19 @@
   "files.associations": {
     "*.tofu": "terraform",
     "*.ign": "json"
+  },
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "microos/ignition/controlplane.yaml",
+        "cmd": "butane -p -o ${workspaceFolder}/microos/ignition/controlplane.ign ${workspaceFolder}/microos/ignition/controlplane.yaml",
+        "isAsync": true
+      },
+      {
+        "match": "microos/ignition/worker.yaml",
+        "cmd": "butane -p -o ${workspaceFolder}/microos/ignition/worker.ign ${workspaceFolder}/microos/ignition/worker.yaml",
+        "isAsync": true
+      }
+    ]
   }
 }
