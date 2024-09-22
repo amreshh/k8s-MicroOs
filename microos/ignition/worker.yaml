@@ -4,7 +4,7 @@ systemd:
   units:
     - name: sshd.service
       enabled: true
-    - name: cri-o.service
+    - name: crio.service
       enabled: true
     - name: kubelet.service
       enabled: true
@@ -19,10 +19,12 @@ systemd:
         [Service]
         Environment=CRI_O_VERSION=1.24.3
         Environment=KUBERNETES_VERSION=1.31.1
+        Environment=SOCAT_VERSION=1.8.0.0
+        Environment=EBTABLES_VERSION=2.0.11
         Restart=on-failure
         RestartSec=30
         RemainAfterExit=yes
-        ExecStart=/bin/bash -c "zypper --gpg-auto-import-keys ref && transactional-update reboot --non-interactive pkg install cri-o-${CRI_O_VERSION} kubelet-${KUBERNETES_VERSION} socat ebtables"
+        ExecStart=/bin/bash -c "zypper --gpg-auto-import-keys ref && transactional-update reboot --non-interactive pkg install cri-o-${CRI_O_VERSION} kubeadm-${KUBERNETES_VERSION} kubelet-${KUBERNETES_VERSION} socat-${SOCAT_VERSION} ebtables-${EBTABLES_VERSION}"
 
         [Install]
         WantedBy=multi-user.target
@@ -86,3 +88,13 @@ storage:
               "docker": {}
             }
           }
+  links:
+    - path: /etc/localtime
+      overwrite: true
+      target: /usr/share/zoneinfo/Europe/Amsterdam
+    - path: /etc/systemd/system/multi-user.target.wants/crio.service
+      overwrite: true
+      target: /usr/lib/systemd/system/crio.service
+    - path: /etc/systemd/system/multi-user.target.wants/kubelet.service
+      overwrite: true
+      target: /usr/lib/systemd/system/kubelet.service

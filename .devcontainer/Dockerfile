@@ -12,3 +12,5 @@ RUN zypper install -y tar \
     butane \
     kubernetes-client \
     tofu-${OPENTOFU_VERSION}
+
+RUN echo 'alias ls="ls --color"' >> ~/.bashrc
