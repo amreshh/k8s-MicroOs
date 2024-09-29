@@ -19,7 +19,7 @@ systemd:
         StartLimitBurst=5
 
         [Service]
-        Environment=CRI_O_VERSION=1.24.3
+        Environment=CRI_O_VERSION=1.31.0
         Environment=KUBERNETES_VERSION=1.31.1
         Environment=SOCAT_VERSION=1.8.0.0
         Environment=EBTABLES_VERSION=2.0.11
@@ -27,7 +27,6 @@ systemd:
         RestartSec=30
         RemainAfterExit=yes
         ExecStart=/bin/bash -c "zypper --gpg-auto-import-keys ref && transactional-update reboot --non-interactive pkg install kubeadm-${KUBERNETES_VERSION} kubelet-${KUBERNETES_VERSION} kubectl-${KUBERNETES_VERSION} cri-o-${CRI_O_VERSION} socat-${SOCAT_VERSION} ebtables-${EBTABLES_VERSION}"
-
         [Install]
         WantedBy=multi-user.target
 passwd:
@@ -55,8 +54,21 @@ storage:
           baseurl=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/
           enabled=1
           gpgcheck=1
+          autorefresh=1
           gpgkey=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/repodata/repomd.xml.key
           exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
+    - path: /etc/zypp/repos.d/cri-o.repo
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: |
+          [cri-o]
+          name=CRI-O
+          baseurl=https://pkgs.k8s.io/addons:/cri-o:/stable:/v1.31/rpm/
+          enabled=1
+          gpgcheck=1
+          autorefresh=1
+          gpgkey=https://pkgs.k8s.io/addons:/cri-o:/stable:/v1.31/rpm/repodata/repomd.xml.key
     - path: /etc/sysctl.d/99-kubernetes.conf
       mode: 0644
       overwrite: true
@@ -72,24 +84,6 @@ storage:
         inline: |
           overlay
           br_netfilter
-    - path: /etc/containers/policy.json
-      mode: 0644
-      overwrite: true
-      contents:
-        inline: |
-          {
-            "default": [{
-                "type": "insecureAcceptAnything"
-              }],
-            "transports": {
-              "docker-daemon": {
-                "": [{
-                    "type": "insecureAcceptAnything"
-                  }]
-              },
-              "docker": {}
-            }
-          }
   links:
     - path: /etc/localtime
       overwrite: true
