@@ -9,8 +9,12 @@ RUN zypper --gpg-auto-import-keys refresh opentofu-source
 RUN zypper install -y tar \
     gzip \
     git \
-    butane \
-    kubernetes-client \
+    # butane \
+    # kubernetes-client \
+    # talosctl \
+    # talosctl-bash-completion \
     tofu-${OPENTOFU_VERSION}
 
-RUN echo 'alias ls="ls --color"' >> ~/.bashrc
+RUN echo 'alias ls="ls --color"' >>~/.bashrc
+# RUN echo 'talosctl completion bash' >>~/.bashrc
+# RUN echo 'kubectl completion bash' >>~/.bashrc

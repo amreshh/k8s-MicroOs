@@ -1,13 +1,21 @@
-variable "network_id" {
+variable "talos_version" {
   type        = string
-  description = "Network to use"
+  description = "Talos version"
 }
 
-variable "controlplane_volumes" {
-  type = map(object({
-    id   = string
-    name = string
-  }))
+variable "kubernetes_version" {
+  type        = string
+  description = "Kubernetes version to provision"
+}
+
+variable "domain" {
+  type        = string
+  description = "Network domain"
+}
+
+variable "cluster_name" {
+  type        = string
+  description = "Name of the kubernetes cluster"
 }
 
 variable "controlplanes" {
@@ -19,13 +27,6 @@ variable "controlplanes" {
     volume_size = number
     address     = string
     mac         = string
-  }))
-}
-
-variable "worker_volumes" {
-  type = map(object({
-    id   = string
-    name = string
   }))
 }
 

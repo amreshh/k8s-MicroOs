@@ -1,12 +1,11 @@
 resource "libvirt_domain" "controlplanes" {
   for_each = var.controlplanes
 
-  name            = each.value.name
-  description     = each.value.description
-  vcpu            = each.value.vcpu
-  memory          = each.value.memory * 1024
-  running         = true
-  coreos_ignition = var.controlplane_ignition_id
+  name        = each.value.name
+  description = each.value.description
+  vcpu        = each.value.vcpu
+  memory      = each.value.memory * 1024
+  running     = true
 
   disk {
     volume_id = var.controlplane_volumes[each.value.name].id
@@ -29,12 +28,11 @@ resource "libvirt_domain" "controlplanes" {
 resource "libvirt_domain" "workers" {
   for_each = var.workers
 
-  name            = each.value.name
-  description     = each.value.description
-  vcpu            = each.value.vcpu
-  memory          = each.value.memory * 1024
-  running         = true
-  coreos_ignition = var.worker_ignition_id
+  name        = each.value.name
+  description = each.value.description
+  vcpu        = each.value.vcpu
+  memory      = each.value.memory * 1024
+  running     = true
 
   disk {
     volume_id = var.worker_volumes[each.value.name].id

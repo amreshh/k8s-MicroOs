@@ -1,7 +1,31 @@
-variable "microos_image" {
+variable "talos_linux_image" {
   type        = string
-  default     = "../microos/openSUSE-MicroOS.x86_64-ContainerHost-kvm-and-xen.qcow2"
-  description = "MicroOS image to use"
+  default     = "../talos/metal-amd64.qcow2"
+  description = "Talos Linux Image"
+}
+
+variable "talos_version" {
+  type        = string
+  default     = "1.8.0"
+  description = "Talos version"
+}
+
+variable "kubernetes_version" {
+  type        = string
+  default     = "1.31.1"
+  description = "Kubernetes version to provision"
+}
+
+variable "domain" {
+  type        = string
+  default     = "k8s.local"
+  description = "Network domain"
+}
+
+variable "cluster_name" {
+  type        = string
+  default     = "test"
+  description = "Name of the kubernetes cluster"
 }
 
 variable "controlplanes" {
