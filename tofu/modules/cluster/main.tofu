@@ -31,6 +31,23 @@ resource "talos_machine_configuration_apply" "controlplane" {
   ]
 }
 
+resource "talos_machine_configuration_apply" "workers" {
+  for_each                    = data.talos_machine_configuration.workers
+  client_configuration        = talos_machine_secrets.machine_secrets.client_configuration
+  machine_configuration_input = each.value.machine_configuration
+  endpoint                    = var.workers[each.key].address
+  node                        = var.workers[each.key].address
+  config_patches = [
+    yamlencode({
+      machine = {
+        install = {
+          disk = "/dev/vda"
+        }
+      }
+    })
+  ]
+}
+
 resource "talos_machine_bootstrap" "talos" {
   for_each             = var.controlplanes
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
