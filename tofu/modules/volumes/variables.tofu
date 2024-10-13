@@ -1,6 +1,6 @@
-variable "microos_image" {
+variable "talos_linux_image" {
   type        = string
-  description = "openSUSE MicroOS image"
+  description = "Talos Linux Image"
 }
 
 variable "controlplanes" {

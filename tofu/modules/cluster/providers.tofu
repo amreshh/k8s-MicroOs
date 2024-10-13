@@ -6,6 +6,10 @@ terraform {
       source  = "dmacvicar/libvirt"
       version = "0.7.6"
     }
+    talos = {
+      source  = "siderolabs/talos"
+      version = "0.6.0"
+    }
   }
 }
 
