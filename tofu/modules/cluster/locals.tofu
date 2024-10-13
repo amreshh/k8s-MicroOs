@@ -9,5 +9,15 @@ locals {
         disk = "/dev/vda"
       }
     }
+    cluster = {
+      network = {
+        cni = {
+          name = "none"
+        }
+      }
+      proxy = {
+        disabled = true
+      }
+    }
   }
 }

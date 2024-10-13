@@ -10,11 +10,17 @@ RUN zypper --gpg-auto-import-keys refresh opentofu-source
 RUN zypper install -y tar \
     gzip \
     git \
+    helm \
     kubernetes-client \
+    bash-completion \
     tofu-${OPENTOFU_VERSION}
 RUN curl -L https://github.com/siderolabs/talos/releases/download/${TALOS_VERSION}/talosctl-linux-amd64 -o /usr/local/bin/talosctl && chmod +x /usr/local/bin/talosctl
 
 
+RUN helm repo add cilium https://helm.cilium.io/ && helm repo update
+
+RUN tofu -install-autocomplete
 RUN echo 'alias ls="ls --color"' >>~/.bashrc
-RUN echo 'talosctl completion bash' >>~/.bashrc
-RUN echo 'kubectl completion bash' >>~/.bashrc
+RUN echo 'source <(talosctl completion bash)' >> ~/.bashrc
+RUN echo 'source <(kubectl completion bash)' >> ~/.bashrc
+RUN echo source <(helm completion bash) >> ~/.bashrc
