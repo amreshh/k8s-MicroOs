@@ -32,13 +32,11 @@ data "talos_machine_configuration" "workers" {
 #   endpoints            = [each.value.address]
 # }
 
-# TODO: loop better
+# TODO: loop better / only controlplane serves talos api
 data "talos_client_configuration" "talosconfig" {
   cluster_name         = var.cluster_name
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
   endpoints = [
-    "192.168.150.10",
-    "192.168.150.20",
-    "192.168.150.21"
+    var.controlplanes.controlplane1.address
   ]
 }

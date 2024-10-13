@@ -1,15 +1,3 @@
-locals {
-  common_machine_config = {
-    machine = {
-      certSANs = [
-        "192.168.150.10",
-        "192.168.150.20",
-        "192.168.150.21",
-        "controlplane1.k8s.lab"
-    ] }
-  }
-}
-
 resource "talos_machine_secrets" "machine_secrets" {
   talos_version = var.talos_version
 }
@@ -21,13 +9,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
   endpoint                    = var.controlplanes[each.key].address
   node                        = var.controlplanes[each.key].address
   config_patches = [
-    yamlencode({
-      machine = {
-        install = {
-          disk = "/dev/vda"
-        }
-      }
-    })
+    yamlencode(local.common_machine_config)
   ]
 }
 
@@ -38,13 +20,7 @@ resource "talos_machine_configuration_apply" "workers" {
   endpoint                    = var.workers[each.key].address
   node                        = var.workers[each.key].address
   config_patches = [
-    yamlencode({
-      machine = {
-        install = {
-          disk = "/dev/vda"
-        }
-      }
-    })
+    yamlencode(local.common_machine_config)
   ]
 }
 
@@ -69,8 +45,8 @@ resource "talos_machine_bootstrap" "talos" {
 # TODO: combine kubeconfig in loop
 resource "talos_cluster_kubeconfig" "kubeconfig" {
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
-  endpoint             = "192.168.150.10"
-  node                 = "192.168.150.10"
+  endpoint             = var.controlplanes.controlplane1.address
+  node                 = var.controlplanes.controlplane1.address
   depends_on = [
     talos_machine_bootstrap.talos
   ]
