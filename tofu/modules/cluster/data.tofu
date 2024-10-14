@@ -40,3 +40,12 @@ data "talos_client_configuration" "talosconfig" {
     var.controlplanes.controlplane1.address
   ]
 }
+
+# TODO: will be deprecated
+data "talos_cluster_kubeconfig" "kubeconfig" {
+  client_configuration = talos_machine_secrets.machine_secrets.client_configuration
+  node                 = var.controlplanes.controlplane1.address
+  depends_on = [
+    talos_machine_bootstrap.talos
+  ]
+}

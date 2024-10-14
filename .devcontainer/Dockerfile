@@ -16,11 +16,10 @@ RUN zypper install -y tar \
     tofu-${OPENTOFU_VERSION}
 RUN curl -L https://github.com/siderolabs/talos/releases/download/${TALOS_VERSION}/talosctl-linux-amd64 -o /usr/local/bin/talosctl && chmod +x /usr/local/bin/talosctl
 
-
 RUN helm repo add cilium https://helm.cilium.io/ && helm repo update
 
-RUN tofu -install-autocomplete
-RUN echo 'alias ls="ls --color"' >>~/.bashrc
+RUN echo 'complete -C /usr/bin/tofu tofu' >> ~/.bashrc
+RUN echo 'alias ls="ls --color"' >> ~/.bashrc
 RUN echo 'source <(talosctl completion bash)' >> ~/.bashrc
 RUN echo 'source <(kubectl completion bash)' >> ~/.bashrc
-RUN echo source <(helm completion bash) >> ~/.bashrc
+RUN echo 'source <(helm completion bash)' >> ~/.bashrc
