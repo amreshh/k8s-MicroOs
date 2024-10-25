@@ -2,3 +2,4 @@
 *.ign
 .terraform*
 *.tfstate*
+notes.md

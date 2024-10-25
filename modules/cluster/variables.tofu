@@ -13,6 +13,11 @@ variable "domain" {
   description = "Network domain"
 }
 
+variable "cilium_version" {
+  type        = string
+  description = "Cilium version to provision"
+}
+
 variable "cluster_name" {
   type        = string
   description = "Name of the kubernetes cluster"

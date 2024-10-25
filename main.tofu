@@ -27,6 +27,7 @@ module "cluster" {
   source             = "./modules/cluster"
   talos_version      = var.talos_version
   kubernetes_version = var.kubernetes_version
+  cilium_version     = var.cilium_version
   domain             = var.domain
   cluster_name       = var.cluster_name
   controlplanes      = var.controlplanes

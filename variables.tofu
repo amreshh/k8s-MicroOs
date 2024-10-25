@@ -1,6 +1,6 @@
 variable "talos_linux_image" {
   type        = string
-  default     = "../talos/metal-amd64.qcow2"
+  default     = "metal-amd64.qcow2"
   description = "Talos Linux Image"
 }
 
@@ -14,6 +14,12 @@ variable "kubernetes_version" {
   type        = string
   default     = "1.31.1"
   description = "Kubernetes version to provision"
+}
+
+variable "cilium_version" {
+  type        = string
+  default     = "1.16.2"
+  description = "Cilium version to provision"
 }
 
 variable "domain" {
