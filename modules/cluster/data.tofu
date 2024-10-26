@@ -25,14 +25,6 @@ data "talos_machine_configuration" "workers" {
   docs               = "true"
 }
 
-# data "talos_client_configuration" "talosconfig" {
-#   for_each             = var.controlplanes
-#   cluster_name         = var.cluster_name
-#   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
-#   endpoints            = [each.value.address]
-# }
-
-# TODO: loop better / only controlplane serves talos api
 data "talos_client_configuration" "talosconfig" {
   cluster_name         = var.cluster_name
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
@@ -41,11 +33,16 @@ data "talos_client_configuration" "talosconfig" {
   ]
 }
 
-# TODO: will be deprecated
-data "talos_cluster_kubeconfig" "kubeconfig" {
+data "talos_cluster_health" "cluster_health" {
+  for_each             = var.controlplanes
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
-  node                 = var.controlplanes.controlplane1.address
+  control_plane_nodes  = [for k, v in local.nodes : v.address if v.machine_type == "controlplane"]
+  worker_nodes         = [for k, v in local.nodes : v.address if v.machine_type == "worker"]
+  endpoints            = [each.value.address]
+  timeouts = {
+    read = "10m"
+  }
   depends_on = [
-    talos_machine_bootstrap.talos
+    helm_release.cilium
   ]
 }

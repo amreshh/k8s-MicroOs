@@ -7,8 +7,8 @@
   "shutdownAction": "stopContainer",
   "mounts": [
     "source=/var/run/libvirt/virtqemud-sock,target=/var/run/libvirt/libvirt-sock,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}/.kube,target=/root/.kube,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}/.talos,target=/root/.talos,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.kube,target=/root/.kube,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.talos,target=/root/.talos,type=bind,consistency=cached"
   ],
   "customizations": {
     "vscode": {

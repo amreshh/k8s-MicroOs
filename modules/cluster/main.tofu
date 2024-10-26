@@ -31,33 +31,27 @@ resource "talos_machine_bootstrap" "talos" {
   node                 = each.value.address
 }
 
-
-# resource "talos_cluster_kubeconfig" "kubeconfig" {
-#   for_each             = var.controlplanes
-#   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
-#   endpoint             = each.value.address
-#   node                 = each.value.address
-#   depends_on = [
-#     talos_machine_bootstrap.talos
-#   ]
-# }
-
-# TODO: combine kubeconfig in loop
 resource "talos_cluster_kubeconfig" "kubeconfig" {
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
   endpoint             = var.controlplanes.controlplane1.address
   node                 = var.controlplanes.controlplane1.address
+}
+
+resource "time_sleep" "wait_for_cluster" {
+  create_duration = "2m"
   depends_on = [
     talos_machine_bootstrap.talos
   ]
 }
 
 resource "helm_release" "cilium" {
-  name       = "cilium"
-  repository = "https://helm.cilium.io/"
-  version    = var.cilium_version
-  chart      = "cilium"
-  namespace  = "kube-system"
+  name            = "cilium"
+  repository      = "https://helm.cilium.io/"
+  version         = var.cilium_version
+  chart           = "cilium"
+  namespace       = "kube-system"
+  atomic          = true
+  cleanup_on_fail = true
 
   set {
     name  = "ipam.mode"
@@ -91,4 +85,19 @@ resource "helm_release" "cilium" {
     name  = "k8sServicePort"
     value = "7445"
   }
+
+  depends_on = [
+    time_sleep.wait_for_cluster
+  ]
+}
+
+resource "local_file" "kubeconfig_file" {
+  content         = talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw
+  filename        = "/root/.kube/config"
+  file_permission = "0711"
+}
+
+resource "local_file" "talosconfig_file" {
+  content  = data.talos_client_configuration.talosconfig.talos_config
+  filename = "/root/.talos/config"
 }

@@ -25,24 +25,26 @@ variable "cluster_name" {
 
 variable "controlplanes" {
   type = map(object({
-    name        = string
-    description = string
-    vcpu        = number
-    memory      = number
-    volume_size = number
-    address     = string
-    mac         = string
+    machine_type = string
+    name         = string
+    description  = string
+    vcpu         = number
+    memory       = number
+    volume_size  = number
+    address      = string
+    mac          = string
   }))
 }
 
 variable "workers" {
   type = map(object({
-    name        = string
-    description = string
-    vcpu        = number
-    memory      = number
-    volume_size = number
-    address     = string
-    mac         = string
+    machine_type = string
+    name         = string
+    description  = string
+    vcpu         = number
+    memory       = number
+    volume_size  = number
+    address      = string
+    mac          = string
   }))
 }
